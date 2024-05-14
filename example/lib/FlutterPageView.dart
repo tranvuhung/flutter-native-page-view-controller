@@ -5,7 +5,6 @@ typedef CloseCallback = void Function(BuildContext);
 typedef LoadContent<T> = Future<T> Function(int);
 
 class FlutterPageView extends StatelessWidget {
-
   _close(BuildContext context) {
     Navigator.popUntil(context, ModalRoute.withName('/'));
   }
@@ -32,14 +31,18 @@ class FlutterPageView extends StatelessWidget {
 }
 
 class SimplyPageView extends StatefulWidget {
-
-static Widget builder(int index, ContentLoader contentLoader, NativeCallback close, NativeCallback next, NativeCallback previous) {
-  return MaterialApp (
-        home: SimplyPageView(index, (context) => NativePageViewController.hide(), NativePageViewController.load));
-}
+  static Widget builder(int index, ContentLoader contentLoader,
+      NativeCallback close, NativeCallback next, NativeCallback previous) {
+    return MaterialApp(
+        home: SimplyPageView(
+      index,
+      (context) => NativePageViewController.hide(),
+      NativePageViewController.load,
+    ));
+  }
 
   final CloseCallback close;
-  final LoadContent<String> load;
+  final LoadContent<dynamic> load;
   final int index;
 
   SimplyPageView(this.index, this.close, this.load);
@@ -49,8 +52,7 @@ static Widget builder(int index, ContentLoader contentLoader, NativeCallback clo
 }
 
 class _SimplyPageViewState extends State<SimplyPageView> {
-
-  String _pageContent;
+  late String _pageContent;
 
   @override
   void initState() {
@@ -62,7 +64,6 @@ class _SimplyPageViewState extends State<SimplyPageView> {
       _pageContent = content;
       setState(() {});
     });
-
   }
 
   @override
@@ -71,12 +72,12 @@ class _SimplyPageViewState extends State<SimplyPageView> {
       appBar: AppBar(title: Text('Flutter page ${widget.index}')),
       body: Center(child: Text(_pageContent)),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            widget.close(context);
-          },
-          tooltip: 'close',
-          child: const Icon(Icons.close),
-        ),
+        onPressed: () {
+          widget.close(context);
+        },
+        tooltip: 'close',
+        child: const Icon(Icons.close),
+      ),
     );
   }
 }

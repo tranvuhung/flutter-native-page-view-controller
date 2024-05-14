@@ -7,7 +7,9 @@ import 'package:native_page_view_controller/native_page_view_controller.dart';
 
 import 'FlutterPageView.dart';
 
-void main() => runApp(NativePageViewController.getInitialWidget(SimplyPageView.builder) ?? MyApp());
+void main() =>
+    runApp(NativePageViewController.getInitialWidget(SimplyPageView.builder) ??
+        MyApp());
 
 class MyApp extends StatefulWidget {
   @override
@@ -15,7 +17,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   String _platformVersion = 'Hello world!';
 
   @override
@@ -24,9 +25,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _launchNativePageView() async {
-    NativePageViewController.show(5, (pageIndex) {
-      return "Page Content --- $pageIndex";
-    }, pageRect: _MyAppState.getPageRect());
+    NativePageViewController.show(
+      5,
+      (pageIndex) {
+        return "Page Content --- $pageIndex";
+      },
+      pageRect: _MyAppState.getPageRect(),
+    );
     setState(() {});
   }
 
@@ -54,29 +59,28 @@ class _MyAppState extends State<MyApp> {
                           Text('Running on: $_platformVersion\n'),
                           Padding(
                             padding: const EdgeInsets.all(18.0),
-                            child:  Builder(builder: (context) => 
-                            RaisedButton(
-                                child: const Text('Flutter PageView'),
-                                onPressed: () {
-                                  _launchFlutterPageView(context);
-                                  Navigator.push(context,
-                                      new MaterialPageRoute(builder: (context) {
-                                    return FlutterPageView();
-                                  }));
-                                })),
+                            child: Builder(
+                                builder: (context) => ElevatedButton(
+                                    child: const Text('Flutter PageView'),
+                                    onPressed: () {
+                                      _launchFlutterPageView(context);
+                                      Navigator.push(context,
+                                          new MaterialPageRoute(
+                                              builder: (context) {
+                                        return FlutterPageView();
+                                      }));
+                                    })),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(18.0),
-                            child: RaisedButton(
+                            child: ElevatedButton(
                                 child: Text('Native PageViewController'),
                                 onPressed: _launchNativePageView),
                           ),
                         ])),
                   )
                 ])));
-  
   }
-
 
   static Size getScreenSize() {
     final Size size = window.physicalSize;
@@ -87,15 +91,14 @@ class _MyAppState extends State<MyApp> {
     return Size(screenWidth, screenHeight);
   }
 
-
   static Size getTargetSize() {
     final Size screenSize = getScreenSize();
     final double targetRatio = 2048.0 / 2836.0;
 
     if (screenSize.aspectRatio < targetRatio) {
-      return Size(screenSize.width, screenSize.height*targetRatio);
+      return Size(screenSize.width, screenSize.height * targetRatio);
     } else {
-      return Size(screenSize.width/targetRatio, screenSize.height);
+      return Size(screenSize.width / targetRatio, screenSize.height);
     }
   }
 
@@ -105,15 +108,13 @@ class _MyAppState extends State<MyApp> {
 
     print("screenSize=$screenSize, targetSize=$targetSize");
     final rect = Rect.fromLTWH(
-        (screenSize.width - targetSize.width)/2,
-        (screenSize.height - targetSize.height)/2,
+        (screenSize.width - targetSize.width) / 2,
+        (screenSize.height - targetSize.height) / 2,
         targetSize.width,
-        targetSize.height
-    );
+        targetSize.height);
 
     print("pageRect=$rect");
 
     return rect;
-
   }
 }
